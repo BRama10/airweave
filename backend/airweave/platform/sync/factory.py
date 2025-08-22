@@ -165,6 +165,7 @@ class SyncFactory:
                 "source_connection_id": str(source_connection_data["connection_id"]),
                 "collection_readable_id": str(collection.readable_id),
                 "organization_name": ctx.organization.name,
+                "scheduled": str(sync_job.scheduled),
             },
         )
 

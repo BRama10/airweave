@@ -19,6 +19,7 @@ class SyncJobBase(BaseModel):
 
     sync_id: UUID
     status: SyncJobStatus = SyncJobStatus.PENDING
+    scheduled: bool = False
     entities_inserted: Optional[int] = 0
     entities_updated: Optional[int] = 0
     entities_deleted: Optional[int] = 0
@@ -47,6 +48,7 @@ class SyncJobUpdate(BaseModel):
     """Schema for updating a SyncJob object."""
 
     status: Optional[SyncJobStatus] = None
+    scheduled: Optional[bool] = None
     entities_inserted: Optional[int] = None
     entities_updated: Optional[int] = None
     entities_deleted: Optional[int] = None
@@ -92,6 +94,7 @@ class SyncJob(SyncJobInDBBase):
             created_at=self.created_at,
             modified_at=self.modified_at,
             status=self.status,
+            scheduled=self.scheduled,
             entities_inserted=self.entities_inserted,
             entities_updated=self.entities_updated,
             entities_deleted=self.entities_deleted,
@@ -150,6 +153,12 @@ class SourceConnectionJob(BaseModel):
         "• **completed**: Finished successfully with all data processed<br/>"
         "• **failed**: Encountered errors and could not complete<br/>"
         "• **cancelled**: Manually cancelled before completion",
+    )
+    scheduled: bool = Field(
+        False,
+        description=(
+            "Whether this data refresh was triggered by a schedule (true) or manually (false)."
+        ),
     )
     entities_inserted: Optional[int] = Field(
         0,

@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
-from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String
+from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String
 from sqlalchemy import Enum as SQLAlchemyEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -37,6 +37,7 @@ class SyncJob(OrganizationBase, UserMixin):
     entities_skipped: Mapped[int] = mapped_column(Integer, default=0)
     error: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     entities_encountered: Mapped[Optional[dict]] = mapped_column(JSON, default={})
+    scheduled: Mapped[bool] = mapped_column(Boolean, default=False)
 
     sync: Mapped["Sync"] = relationship(
         "Sync",

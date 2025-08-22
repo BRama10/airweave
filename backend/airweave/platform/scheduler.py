@@ -425,7 +425,7 @@ class PlatformScheduler:
             # Create a new sync job with unit of work
             logger.debug(f"Creating new sync job for sync {sync.id}")
             async with get_db_context() as db:
-                sync_job_in = schemas.SyncJobCreate(sync_id=sync.id)
+                sync_job_in = schemas.SyncJobCreate(sync_id=sync.id, scheduled=True)
                 # Use the system user for creating the job
                 sync_job = await crud.sync_job.create(db=db, obj_in=sync_job_in, ctx=ctx)
                 logger.debug(f"Created sync job {sync_job.id} for sync {sync.id}")
