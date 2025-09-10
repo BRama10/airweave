@@ -40,7 +40,6 @@ const AnimatedCount: React.FC<{
   const [prevCount, setPrevCount] = useState(count);
   const [glowIntensity, setGlowIntensity] = useState(0); // 0 to 1
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (count !== prevCount && count > prevCount) {
@@ -55,12 +54,7 @@ const AnimatedCount: React.FC<{
       setPrevCount(count);
 
       // Start decay after 200ms hold
-      // Clear any existing timeout before setting a new one
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-      timeoutRef.current = setTimeout(() => {
+      setTimeout(() => {
         // Use setInterval for continuous decay
         intervalRef.current = setInterval(() => {
           setGlowIntensity(prev => {
@@ -89,10 +83,6 @@ const AnimatedCount: React.FC<{
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
-      }
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
       }
     };
   }, [count]);
